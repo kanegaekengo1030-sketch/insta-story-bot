@@ -1,0 +1,35 @@
+name: Instagram Story Auto Post
+
+on:
+  schedule:
+    # ★投稿時刻はここ。cronはUTC（日本時間 - 9時間）
+    # 日本時間 19:00 = UTC 10:00 → "0 10 * * *"
+    - cron: "0 10 * * *"
+  workflow_dispatch:   # 手動テスト用ボタン
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Post stories
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          # Instagramログイン方式のトークンなら graph.instagram.com のまま
+          GRAPH_HOST: graph.instagram.com
+          # ★メンション（1枚目・2枚目で別々）。カンマ区切り
+          # 書き方は「名前:x:y」。x=左右、y=上下（0〜1、左上が0）。位置はスクショからの目安（未確認）
+          STORY_MENTIONS_1: "ruru_filiaplus:0.63:0.17,shori_filia:0.63:0.22,kuuga0701:0.63:0.26"
+          STORY_MENTIONS_2: "tsubasa_filiaplus:0.67:0.23,soushi_koki:0.67:0.27"
+          # メンションの位置のテスト用（最初は空のまま。見え方を確認してから使う）
+          STORY_MENTION_POS: ""
+          # 画像はこのリポジトリの一番上（ルート）に置いたものを使う（1枚目=8340.jpg、2枚目=8341.jpg）
+          STORY_IMAGE_URLS: >-
+            https://raw.githubusercontent.com/${{ github.repository }}/main/8340.jpg,
+            https://raw.githubusercontent.com/${{ github.repository }}/main/8341.jpg
+        run: python post_stories.py

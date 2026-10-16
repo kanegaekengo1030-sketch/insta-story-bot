@@ -1,0 +1,18 @@
+name: Check Instagram Account
+
+on:
+  workflow_dispatch:   # 手動ボタンだけで動く（自動では動かない）
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check token and show account id
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GRAPH_HOST: graph.instagram.com
+        run: python check_account.py
