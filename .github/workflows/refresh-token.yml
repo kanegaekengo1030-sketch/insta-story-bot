@@ -1,9 +1,6 @@
 name: Instagramトークン自動更新
 
 on:
-  schedule:
-    # 毎月1日 09:00 JST (= 00:00 UTC)
-    - cron: "0 0 1 * *"
   workflow_dispatch:
 
 jobs:
