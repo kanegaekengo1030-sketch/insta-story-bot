@@ -1,10 +1,6 @@
 name: Instagram Story Auto Post
 
 on:
-  schedule:
-    # ★投稿時刻はここ。cronはUTC（日本時間 - 9時間）
-    # 日本時間 18:40 = UTC 9:40（0分は混むのでずらす） → "40 9 * * *"
-    - cron: "40 9 * * *"
   workflow_dispatch:   # 手動テスト用ボタン
 
 jobs:
